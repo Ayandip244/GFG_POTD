@@ -1,0 +1,58 @@
+//{ Driver Code Starts
+#include <bits/stdc++.h>
+using namespace std;
+
+// } Driver Code Ends
+class Solution {
+  public:
+    int solve(vector<int> &arr, vector<vector<int>>&dp ,int t,int i){
+  
+    if(i==0){
+        if(t==0 && arr[0]==0)return 2;
+        else if(t==0 || arr[0]==t)return 1;
+        else return 0;
+    }
+    
+    if(dp[i][t]!=-1)return dp[i][t];
+    int take=0;
+    if(t>=arr[i]){take=solve(arr,dp,t-arr[i],i-1); }
+    int not_take=solve(arr,dp,t,i-1);
+    return dp[i][t]=(take+not_take)%1000000007;
+    
+    }
+    int countPartitions(int n, int d, vector<int>& arr) {
+        // Code here
+        int t=0;
+        for(int i=0;i<n;i++){
+            t=t+arr[i];
+        } 
+    
+        if((t-d)%2!=0 || t-d<0)return 0; 
+        t=(t-d)/2;
+
+        vector<vector<int>>dp(n,vector<int>(t+1,-1)); 
+        return solve(arr,dp,t,n-1);
+    }
+};
+
+//{ Driver Code Starts.
+int main() {
+    int t;
+    cin >> t;
+    while (t--) {
+        int n, d;
+        cin >> n >> d;
+        vector<int> arr;
+
+        for (int i = 0; i < n; ++i) {
+            int x;
+            cin >> x;
+            arr.push_back(x);
+        }
+
+        Solution obj;
+        cout << obj.countPartitions(n, d, arr) << "\n";
+    }
+    return 0;
+}
+// } Driver Code Ends
